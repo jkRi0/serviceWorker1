@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Offline Website</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="../../assets/favicon.ico">
+</head>
+<body>
+  <h1>Hello, this website works offline!</h1>
+  <p>Try disconnecting your internet and reloading the page.</p>
+  <div id="connection-status" class="status-indicator"></div>
+  <button id="unregister-sw-button">Unregister Service Worker</button>
+
+  <script src="script.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then(registration => {
+            console.log('ServiceWorker registration successful with scope: ', registration.scope);
+          })
+          .catch(error => {
+            console.error('ServiceWorker registration failed: ', error);
+          });
+      });
+    }
+  </script>
+  <!-- asd -->
+</body>
+</html>

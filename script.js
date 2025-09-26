@@ -1,79 +1,40 @@
-console.log('App is running!');
-
-// Function to update connection status
-function updateConnectionStatus(isOnline) {
-  const statusElement = document.getElementById('connection-status');
-  
-  if (statusElement) {
-    statusElement.textContent = `You are currently ${isOnline ? 'online' : 'offline'}`;
-    statusElement.className = isOnline ? 'online' : 'offline';
-  }
-}
-
-// Function to check internet connection
-function checkInternetConnection() {
-  // Try to fetch a small file or make a HEAD request to a reliable server
-  fetch('https://www.google.com/favicon.ico', { 
-    mode: 'no-cors',
-    cache: 'no-cache'
-  })
-    .then(() => {
-      updateConnectionStatus(true);
-    })
-    .catch(() => {
-      updateConnectionStatus(false);
-    });
-}
-
-// Create a real-time connection monitor
-function createConnectionMonitor() {
-  // Initial check
-  checkInternetConnection();
-  
-  // Check every 5 seconds
-  setInterval(checkInternetConnection, 5000);
-  
-  // Also keep the event listeners for immediate feedback
-  window.addEventListener('online', () => {
-    updateConnectionStatus(true);
-  });
-
-  window.addEventListener('offline', () => {
-    updateConnectionStatus(false);
+const myButton = document.getElementById('myButton');
+if (myButton) {
+  myButton.addEventListener('click', async () => {
+      const inputValue = document.getElementById('myInput').value;
+      const isOnline = await checkInternetConnection();
+      
+      console.log(isOnline);
+      if(isOnline){
+          try {
+              const { sayHelloOnline } = await import('./onlineFunctions.js'); // Import from JS module
+              sayHelloOnline(inputValue);
+              console.log("The browser is online.123123");
+          } catch (error) {
+              console.error("Failed to load onlineFunctions.js online:", error);
+          }
+      } else {
+          try {
+              const { sayHello } = await import('./offlineJS.js');
+              sayHello(inputValue);
+              console.log("The browser is offline.123123");
+          } catch (error) {
+              console.error("Failed to load offlineJS.js offline:", error);
+          }
+      }
   });
 }
 
-// Start monitoring
-createConnectionMonitor();
 
+async function checkInternetConnection() {
+    try {
+        // Fetch a unique URL to bypass service worker cache and browser cache
+        await fetch('/online-check.txt?' + new Date().getTime(), { mode: 'no-cors', cache: 'no-store' });
+        console.log("The browser is online.");
+        return true;
+    } catch (error) {
+        console.log("The browser is offline.");
+        return false;
+    }
+}
 
-
-
-// const isOnline = window.navigator.onLine;
-
-// if (isOnline) {
-//   console.log("The browser is online.");
-// } else {
-//   console.log("The browser is offline.");
-// }
-
-
-
-
-// Add unregister service worker functionality
-// const unregisterButton = document.getElementById('unregister-sw-button');
-// if (unregisterButton) {
-//   unregisterButton.addEventListener('click', () => {
-//     if ('serviceWorker' in navigator) {
-//       navigator.serviceWorker.getRegistrations().then(function(registrations) {
-//         for (let registration of registrations) {
-//           registration.unregister().then(function(boolean) {
-//             console.log((boolean ? 'Successfully unregistered' : 'Failed to unregister') + ' service worker: ' + registration.scope);
-//           });
-//         }
-//       }).catch(function(error) {
-//         console.error('Error unregistering service worker:', error);
-//       });
-//     }
-//   });
-// }
