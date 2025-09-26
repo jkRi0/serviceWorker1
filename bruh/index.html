@@ -19,8 +19,8 @@
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         // Append a unique timestamp to the service worker URL to force a fetch of the latest version
-        const serviceWorkerUrl = './service-worker.js?v=' + new Date().getTime();
-        navigator.serviceWorker.register(serviceWorkerUrl)
+        const serviceWorkerUrl = '/bruh/service-worker.js?v=' + new Date().getTime();
+        navigator.serviceWorker.register(serviceWorkerUrl, { scope: "/" })
           .then(registration => {
             console.log('ServiceWorker registration successful with scope: ', registration.scope);
           })
