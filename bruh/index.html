@@ -20,7 +20,7 @@
       // Always fetch the latest version
       const serviceWorkerUrl = './service-worker.js?v=' + new Date().getTime();
 
-      navigator.serviceWorker.register(serviceWorkerUrl, { scope: "/" })
+      navigator.serviceWorker.register(serviceWorkerUrl, { scope: "/serviceWorker1/" })
         .then(registration => {
           console.log('✅ ServiceWorker registered with scope:', registration.scope);
 
