@@ -18,7 +18,7 @@
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       // Always fetch the latest version
-      const serviceWorkerUrl = '/service-worker.js?v=' + new Date().getTime();
+      const serviceWorkerUrl = './service-worker.js?v=' + new Date().getTime();
 
       navigator.serviceWorker.register(serviceWorkerUrl, { scope: "/" })
         .then(registration => {
